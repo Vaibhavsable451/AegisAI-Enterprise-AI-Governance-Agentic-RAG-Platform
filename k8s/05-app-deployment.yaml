@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: aegis-app
-          image: <ECR_REPO>/aegis-app:latest
+          image: ghcr.io/vaibhavsable451/aegisai-enterprise-ai-governance-agentic-rag-platform-app:latest
           ports:
             - containerPort: 8000
           envFrom:

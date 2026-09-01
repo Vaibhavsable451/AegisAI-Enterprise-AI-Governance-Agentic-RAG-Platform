@@ -1,14 +1,38 @@
 services:
+  mysql:
+    image: mysql:8.0
+    container_name: aegis-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-aegis_password}
+      MYSQL_DATABASE: aegis_governance
+      MYSQL_USER: ${MYSQL_USER:-aegis}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-aegis_password}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p$${MYSQL_ROOT_PASSWORD:-aegis_password}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
   mlflow:
     build:
       context: .
       dockerfile: docker/Dockerfile.mlflow
     container_name: aegis-mlflow
     restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
     env_file:
       - .env
     environment:
-      MLFLOW_BACKEND_STORE_URI: ${DATABASE_URL}
+      MLFLOW_BACKEND_STORE_URI: ${DATABASE_URL:-mysql+pymysql://aegis:aegis_password@mysql:3306/mlflow_tracking}
     ports:
       - "5000:5000"
     volumes:
@@ -21,12 +45,14 @@ services:
     container_name: aegis-app
     restart: unless-stopped
     depends_on:
+      mysql:
+        condition: service_healthy
       mlflow:
         condition: service_started
     env_file:
       - .env
     environment:
-      DATABASE_URL: ${DATABASE_URL}
+      DATABASE_URL: ${DATABASE_URL:-mysql+pymysql://aegis:aegis_password@mysql:3306/aegis_governance}
       MLFLOW_TRACKING_URI: http://mlflow:5000
     ports:
       - "8000:8000"
@@ -44,6 +70,9 @@ services:
       VITE_API_URL: http://localhost:8000
     ports:
       - "5173:5173"
+      - "80:80"
 
 volumes:
+  mysql_data:
   mlflow_artifacts:
+

@@ -1,0 +1,72 @@
+name: AegisAI CI/CD
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  IMAGE_NAME: ghcr.io/vaibhavsable451/aegisai-enterprise-ai-governance-agentic-rag-platform-app
+  DEPLOYMENT_NAME: aegis-app
+  NAMESPACE: aegis
+  CONTAINER_NAME: aegis-app
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ env.IMAGE_NAME }}:${{ github.sha }}
+            ${{ env.IMAGE_NAME }}:latest
+
+      - name: Deploy to EC2/K3s
+        uses: appleboy/ssh-action@v1.2.2
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            set -e
+
+            cd ~/AegisAI-Enterprise-AI-Governance-Agentic-RAG-Platform
+
+            echo "Pulling latest Kubernetes configuration..."
+            git pull origin main
+
+            echo "Updating deployment image..."
+            kubectl -n ${{ env.NAMESPACE }} set image deployment/${{ env.DEPLOYMENT_NAME }} \
+              ${{ env.CONTAINER_NAME }}=${{ env.IMAGE_NAME }}:${{ github.sha }}
+
+            echo "Waiting for rollout..."
+            kubectl -n ${{ env.NAMESPACE }} rollout status \
+              deployment/${{ env.DEPLOYMENT_NAME }} \
+              --timeout=300s
+
+            echo "Checking pods..."
+            kubectl -n ${{ env.NAMESPACE }} get pods -o wide
+
+            echo "Checking service..."
+            kubectl -n ${{ env.NAMESPACE }} get svc
+
+            echo "Deployment successful!"
