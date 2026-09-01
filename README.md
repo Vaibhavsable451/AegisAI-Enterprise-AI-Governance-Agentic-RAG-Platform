@@ -81,6 +81,21 @@ This starts:
 - **MLflow** tracking server on `:5000` (backed by MySQL)
 - **AegisAI app** on `:8000`
 
+## 2.1 Run on AWS EC2
+
+On EC2, build and run the app container directly:
+
+```bash
+docker build -t aegis-app .
+docker run -d --name aegis-app -p 80:8000 --env-file .env aegis-app
+```
+
+If you want to change the container port, pass `-e PORT=...` and map the host port to match:
+
+```bash
+docker run -d --name aegis-app -e PORT=8000 -p 80:8000 --env-file .env aegis-app
+```
+
 ## 3. Try it
 
 ```bash
