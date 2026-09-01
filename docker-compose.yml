@@ -1,0 +1,49 @@
+services:
+  mlflow:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.mlflow
+    container_name: aegis-mlflow
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      MLFLOW_BACKEND_STORE_URI: ${DATABASE_URL}
+    ports:
+      - "5000:5000"
+    volumes:
+      - mlflow_artifacts:/mlflow/artifacts
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aegis-app
+    restart: unless-stopped
+    depends_on:
+      mlflow:
+        condition: service_started
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      MLFLOW_TRACKING_URI: http://mlflow:5000
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build:
+      context: ./aegis-frontend
+      dockerfile: Dockerfile
+    container_name: aegis-frontend
+    restart: unless-stopped
+    depends_on:
+      app:
+        condition: service_started
+    environment:
+      VITE_API_URL: http://localhost:8000
+    ports:
+      - "5173:5173"
+
+volumes:
+  mlflow_artifacts:
