@@ -21,9 +21,7 @@ services:
       start_period: 20s
 
   mlflow:
-    build:
-      context: .
-      dockerfile: docker/Dockerfile.mlflow
+    image: ghcr.io/vaibhavsable451/aegisai-enterprise-ai-governance-agentic-rag-platform-mlflow:latest
     container_name: aegis-mlflow
     restart: unless-stopped
     depends_on:
@@ -39,9 +37,7 @@ services:
       - mlflow_artifacts:/mlflow/artifacts
 
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ghcr.io/vaibhavsable451/aegisai-enterprise-ai-governance-agentic-rag-platform-app:latest
     container_name: aegis-app
     restart: unless-stopped
     depends_on:
@@ -58,9 +54,7 @@ services:
       - "8000:8000"
 
   frontend:
-    build:
-      context: ./aegis-frontend
-      dockerfile: Dockerfile
+    image: ghcr.io/vaibhavsable451/aegisai-enterprise-ai-governance-agentic-rag-platform-frontend:latest
     container_name: aegis-frontend
     restart: unless-stopped
     depends_on:
@@ -69,10 +63,8 @@ services:
     environment:
       VITE_API_URL: http://localhost:8000
     ports:
-      - "5173:5173"
       - "80:80"
 
 volumes:
   mysql_data:
   mlflow_artifacts:
-
