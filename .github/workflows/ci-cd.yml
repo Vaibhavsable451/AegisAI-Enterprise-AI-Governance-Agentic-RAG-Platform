@@ -66,6 +66,8 @@ jobs:
 
       - name: Run Unit & Integration Tests
         run: pytest
+        env:
+          PYTHONPATH: .
 
   build:
     name: Build & push image
@@ -172,6 +174,7 @@ jobs:
       - name: Run Offline Routing & Governance Evaluation
         run: python scripts/eval_routing.py
         env:
+          PYTHONPATH: .
           MLFLOW_TRACKING_URI: ${{ secrets.MLFLOW_TRACKING_URI || 'sqlite:///mlflow.db' }}
 
   deploy:
