@@ -36,8 +36,8 @@ def register(payload: RegisterRequest, db: Session = Depends(get_db)):
 @router.post("/login")
 def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == form_data.username).first()
-    if not user or not verify_password(form_data.password, user.hashed_password):
+    if not user or not verify_password(form_data.password, str(user.hashed_password)):
         raise HTTPException(401, "Incorrect email or password")
 
-    token = create_access_token(subject=user.id, role=user.role)
+    token = create_access_token(subject=str(user.id), role=str(user.role))
     return {"access_token": token, "token_type": "bearer", "role": user.role}

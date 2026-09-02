@@ -23,7 +23,8 @@ async def upload_document(
     source_type: str = Form("policy"),
     db: Session = Depends(get_db),
 ):
-    ext = Path(file.filename).suffix.lower()
+    filename = file.filename or "unknown"
+    ext = Path(filename).suffix.lower()
     if ext not in ALLOWED_EXTENSIONS:
         raise HTTPException(400, f"Unsupported file type '{ext}'. Allowed: {ALLOWED_EXTENSIONS}")
 
@@ -32,13 +33,13 @@ async def upload_document(
         tmp_path = tmp.name
 
     try:
-        doc_id, chunk_count = ingest_file(tmp_path, file.filename, source_type)
+        doc_id, chunk_count = ingest_file(tmp_path, filename, source_type)
     finally:
         Path(tmp_path).unlink(missing_ok=True)
 
     record = Document(
         id=doc_id,
-        filename=file.filename,
+        filename=filename,
         source_type=source_type,
         chunk_count=chunk_count,
         status="processed" if chunk_count > 0 else "failed",
@@ -46,7 +47,7 @@ async def upload_document(
     db.add(record)
     db.commit()
 
-    return {"doc_id": doc_id, "filename": file.filename, "chunks_indexed": chunk_count}
+    return {"doc_id": doc_id, "filename": filename, "chunks_indexed": chunk_count}
 
 
 @router.get("")
