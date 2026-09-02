@@ -1,8 +1,8 @@
 """
 Unit and Integration Tests for AegisAI Platform
 """
-import pytest
 from fastapi.testclient import TestClient
+
 from app.main import app
 
 client = TestClient(app)
@@ -28,7 +28,7 @@ def test_root_endpoint():
 def test_mlflow_tracker_import():
     """Verify MLflow tracker module can be imported and initialized gracefully."""
     from app.tracking.mlflow_tracker import log_request
-    
+
     # Test best-effort logging fallback (swallows exceptions when MLflow server unavailable)
     sample_result = {
         "governance": {
@@ -45,6 +45,6 @@ def test_mlflow_tracker_import():
         "sources": [],
         "token_usage": {"prompt": 50, "completion": 30},
     }
-    
+
     # Should complete without error even if MLflow backend is unreachable
     log_request(trace_id="test-trace-123", result=sample_result)

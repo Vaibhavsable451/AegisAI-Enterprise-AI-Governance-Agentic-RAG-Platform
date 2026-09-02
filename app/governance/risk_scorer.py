@@ -7,7 +7,6 @@ as simple weighted arithmetic (not a black box) so the audit trail can
 show a human exactly why a score was produced.
 """
 from dataclasses import dataclass, field
-from typing import List
 
 
 @dataclass

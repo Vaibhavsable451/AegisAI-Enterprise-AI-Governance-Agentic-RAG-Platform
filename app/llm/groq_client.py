@@ -2,8 +2,8 @@
 Groq LLM client, wrapped through LangChain's ChatGroq so it plugs
 directly into LangChain chains/agents elsewhere in the codebase.
 """
+from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_groq import ChatGroq
-from langchain_core.messages import SystemMessage, HumanMessage
 
 from app.core.config import settings
 

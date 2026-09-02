@@ -3,12 +3,13 @@ AegisAI — Enterprise AI Governance & Agentic RAG Platform
 FastAPI application entrypoint (the "AI Gateway" in the architecture diagram).
 """
 import logging
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.api import routes_audit, routes_auth, routes_chat, routes_dashboard, routes_documents
 from app.core.config import settings
 from app.core.database import init_db
-from app.api import routes_chat, routes_documents, routes_dashboard, routes_audit, routes_auth
 
 logging.basicConfig(level=settings.LOG_LEVEL)
 logger = logging.getLogger("aegisai")

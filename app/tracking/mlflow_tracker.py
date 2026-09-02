@@ -3,9 +3,9 @@ MLflow tracking — logs every governed AI request as an MLflow run so risk
 scores, grounding scores, latency, and token usage are trackable/queryable
 over time and comparable across model/prompt versions.
 """
-import mlflow
 from contextlib import contextmanager
 
+import mlflow
 from app.core.config import settings
 
 _initialized = False

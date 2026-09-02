@@ -5,15 +5,14 @@ Uses HuggingFace sentence-transformer embeddings locally and
 LangChain's Pinecone wrapper for retrieval.
 """
 
-from typing import List, Dict, Any
+from typing import Any, Dict, List
 
-from pinecone import Pinecone, ServerlessSpec
+from langchain_core.documents import Document
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_pinecone import PineconeVectorStore
-from langchain_core.documents import Document
+from pinecone import Pinecone, ServerlessSpec
 
 from app.core.config import settings
-
 
 _embeddings = None
 _vector_store = None

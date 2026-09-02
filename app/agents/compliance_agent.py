@@ -6,7 +6,7 @@ after generation, against the drafted response too.
 from dataclasses import dataclass, field
 from typing import List
 
-from app.governance import pii_detector, prompt_injection, policy_checker
+from app.governance import pii_detector, policy_checker, prompt_injection
 
 
 @dataclass

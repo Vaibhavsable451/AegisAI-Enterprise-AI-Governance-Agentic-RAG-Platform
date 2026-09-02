@@ -7,7 +7,7 @@ regulated-advice detection). Rules are simple and file-driven so
 compliance teams can edit them without touching code.
 """
 import re
-from typing import Optional, Tuple, List
+from typing import List, Optional, Tuple
 
 # In production these would be loaded from the ingested SOP/policy
 # documents themselves (via RAG) or a compliance-managed config table.

@@ -4,11 +4,11 @@ and hand chunks off to the vector store for embedding + upsert.
 """
 import uuid
 from pathlib import Path
-from typing import List, Tuple
+from typing import Tuple
 
+from docx import Document as DocxDocument
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from pypdf import PdfReader
-from docx import Document as DocxDocument
 
 from app.rag.vector_store import upsert_documents
 

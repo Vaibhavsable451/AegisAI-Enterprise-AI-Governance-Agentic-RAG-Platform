@@ -6,9 +6,7 @@ Every AI request/response cycle is persisted here so an org can answer
 import uuid
 from datetime import datetime
 
-from sqlalchemy import (
-    Column, String, Text, Float, Integer, Boolean, DateTime, JSON, ForeignKey
-)
+from sqlalchemy import JSON, Boolean, Column, DateTime, Float, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import relationship
 
 from app.core.database import Base

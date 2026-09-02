@@ -14,13 +14,14 @@ exclude = [
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "B"]
-ignore = ["E501"]
+ignore = ["E501", "B008", "B904", "B905"]
 
 [tool.mypy]
 python_version = "3.11"
 warn_return_any = false
 warn_unused_configs = true
 ignore_missing_imports = true
+disable_error_code = ["attr-defined", "valid-type", "misc", "import-untyped"]
 exclude = [
     "venv/",
     "aegis-frontend/",

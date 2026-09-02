@@ -14,8 +14,7 @@ import time
 import uuid
 from typing import List
 
-from app.agents import retrieval_agent, compliance_agent, response_agent, risk_agent
-from app.core.config import settings
+from app.agents import compliance_agent, response_agent, retrieval_agent, risk_agent
 
 
 def run_pipeline(prompt: str, top_k: int = 4) -> dict:

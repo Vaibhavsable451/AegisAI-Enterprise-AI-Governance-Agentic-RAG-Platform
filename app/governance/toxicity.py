@@ -7,7 +7,6 @@ dependencies, deterministic, fast — good for an audit trail). Swap
 is needed; the rest of the governance layer only depends on the
 (0.0-1.0) float this returns.
 """
-import re
 
 _TOXIC_TERMS = [
     "kill you", "hate speech", "slur", "attack them", "bomb making",

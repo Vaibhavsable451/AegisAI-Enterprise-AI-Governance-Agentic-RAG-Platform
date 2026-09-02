@@ -1,7 +1,8 @@
 """
 Retrieval Agent — pulls relevant evidence chunks from Pinecone for a query.
 """
-from typing import List, Dict, Any
+from typing import Any, Dict, List
+
 from app.rag.vector_store import similarity_search
 
 

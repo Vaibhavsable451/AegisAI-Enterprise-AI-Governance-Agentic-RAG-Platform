@@ -2,6 +2,7 @@
 /audit — query the full AI audit trail: "why did the AI produce this answer?"
 """
 from typing import Optional
+
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 

@@ -3,8 +3,9 @@ Risk Agent — combines toxicity scoring + hallucination/grounding checks +
 compliance signals into a single AI Risk Score and a governance decision.
 """
 from typing import List
-from app.governance import toxicity, hallucination, risk_scorer
+
 from app.core.config import settings
+from app.governance import hallucination, risk_scorer, toxicity
 
 
 def assess(
