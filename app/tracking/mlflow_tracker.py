@@ -6,6 +6,7 @@ over time and comparable across model/prompt versions.
 from contextlib import contextmanager
 
 import mlflow
+
 from app.core.config import settings
 
 _initialized = False

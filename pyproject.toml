@@ -15,10 +15,11 @@ exclude = [
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "B"]
-ignore = ["E501", "B008", "B904", "B905"]
+ignore = ["E501", "B008", "B904", "B905", "I001"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["app"]
+section-order = ["standard-library", "third-party", "first-party", "local-folder"]
 
 [tool.mypy]
 python_version = "3.11"
