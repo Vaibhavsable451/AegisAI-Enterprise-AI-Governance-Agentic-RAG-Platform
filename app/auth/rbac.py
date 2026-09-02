@@ -38,8 +38,8 @@ def create_access_token(subject: str, role: str) -> str:
 def decode_token(token: str) -> dict:
     try:
         return jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
-    except JWTError:
-        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Invalid or expired token")
+    except JWTError as err:
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Invalid or expired token") from err
 
 
 def get_current_user(token: Optional[str] = Depends(oauth2_scheme)) -> dict:

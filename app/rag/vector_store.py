@@ -124,7 +124,7 @@ def upsert_documents(
             page_content=chunk,
             metadata=metadata,
         )
-        for chunk, metadata in zip(chunks, metadatas)
+        for chunk, metadata in zip(chunks, metadatas, strict=True)
     ]
 
     store.add_documents(documents)
