@@ -16,6 +16,9 @@ exclude = [
 select = ["E", "F", "W", "I", "B"]
 ignore = ["E501", "B008", "B904", "B905"]
 
+[tool.ruff.lint.isort]
+known-first-party = ["app"]
+
 [tool.mypy]
 python_version = "3.11"
 warn_return_any = false
